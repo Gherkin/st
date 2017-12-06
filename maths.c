@@ -11,44 +11,28 @@ typedef struct point {
   char* key;
 } point;
 
-int tokenize(char* str, char* token1, char* token2) {
-  short i = 0;
-  short k = 0;
-
-  while(str[i] != ' ') {
-    if(str[i] == '\0') {
-      return 1;
+int tokenize(char* str, char** data_ptr) {
+  for(int i = 0; i < strlen(str); ++i) {
+    if(str[i] == ' ') {
+      str[i] = '\0';
+      *data_ptr = &str[i] + 1;
+      return 0;
     }
-    token1[i] = str[i];
-    i++;
-  }
-  i++;
-
-  while(str[i] != '\0') {
-    if(str[i] != '\n') {
-      token2[k] = str[i];
-    }
-    k++;
-    i++;
   }
 
-  return 0;
+  return 1;
 }
 
 int readdata(point* pointbuf) {
-  size_t size;
-  char* strbuf = malloc(sizeof(char) * STRING_SIZE);
-  if (getline(&strbuf, &size, stdin) == -1) {
-    free(strbuf);
+  size_t size = STRING_SIZE * 5000;
+  if (getline(&(pointbuf->key), &size, stdin) == -1) {
     return 1;
   }
   
-  char* databuf = malloc((strlen(strbuf) + 1) * sizeof(char));
-  tokenize(strbuf, pointbuf->key, databuf);
-  sscanf(databuf, "%lf", &pointbuf->data);
+  char* data_ptr = NULL;
+  tokenize(pointbuf->key, &data_ptr);
+  sscanf(data_ptr, "%lf", &pointbuf->data);
 
-  free(databuf);
-  free(strbuf);
   return 0;
 }
 
@@ -78,9 +62,8 @@ int readkeystruct(double** points, short point_len, point** pointbuf) {
 
 
   while ((exitcode = readdata(*pointbuf)) != 1) {
-    printf("%d %d\n", i, point_len);
     if(i + 1 >= point_len ) {
-      *points = realloc(points, point_len + MALLOC_SEG);
+      *points = realloc(*points, point_len + MALLOC_SEG);
       point_len += MALLOC_SEG;
     }
     if(strcmp(key, (*pointbuf)->key)) {
@@ -104,7 +87,7 @@ int main() {
   point* pointbuf;
   pointbuf = malloc(sizeof(point));
   pointbuf->key = malloc(sizeof(char) * STRING_SIZE * 5000);
-  *(pointbuf->key) = '\0';
+  memset(pointbuf->key, 0, STRING_SIZE * 5000);
   while (readkeystruct(&points, len, &pointbuf) != 1) {
     (void)0;
   }
