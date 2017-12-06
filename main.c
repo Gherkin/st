@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
+#include "maths.h"
 
 #define STRING_SIZE 128
 #define MALLOC_SEG 1024
@@ -34,15 +35,6 @@ int readdata(point* pointbuf) {
   sscanf(data_ptr, "%lf", &pointbuf->data);
 
   return 0;
-}
-
-double avg(double* points, short point_len) {
-  double sum = 0;
-  for (short i = 0; i < point_len; ++i) {
-    sum += *(points + i);
-  }
-
-  return (double)sum / point_len;
 }
 
 int readkeystruct(double** points, short point_len, point** pointbuf) {
