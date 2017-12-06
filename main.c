@@ -25,7 +25,7 @@ int tokenize(char* str, char** data_ptr) {
 }
 
 int readdata(point* pointbuf) {
-  size_t size = STRING_SIZE * 5000;
+  size_t size = 1;
   if (getline(&(pointbuf->key), &size, stdin) == -1) {
     return 1;
   }
@@ -78,8 +78,8 @@ int main() {
   short len = 1;
   point* pointbuf;
   pointbuf = malloc(sizeof(point));
-  pointbuf->key = malloc(sizeof(char) * STRING_SIZE * 5000);
-  memset(pointbuf->key, 0, STRING_SIZE * 5000);
+  pointbuf->key = malloc(sizeof(char) * 1);
+  memset(pointbuf->key, 0, 1);
   while (readkeystruct(&points, len, &pointbuf) != 1) {
     (void)0;
   }
