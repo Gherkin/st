@@ -68,7 +68,7 @@ int readkeystruct(double** points, short point_len, point** pointbuf) {
   //  printf("s=%lf\n", *(points + k));
   //}
 
-  printf("%s %lf\n", key, avg(*points, i));
+  printf("%s %lf %lf\n", key, avg(*points, i), median(*points, i));
   free(key);
   return exitcode;
 }
