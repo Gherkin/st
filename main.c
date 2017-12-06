@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include "maths.h"
 
-#define STRING_SIZE 128
 #define MALLOC_SEG 1024
 
 typedef struct point {
@@ -45,12 +44,12 @@ int readkeystruct(double** points, short point_len, point** pointbuf) {
     readdata(*pointbuf);
   } 
 
+  //TODO reuse
   key = malloc((strlen((*pointbuf)->key) + 1) * sizeof(char));
   strcpy(key, (*pointbuf)->key);
   **points = (*pointbuf)->data;
   ++i;
 
-  //puts(key);
 
 
   while ((exitcode = readdata(*pointbuf)) != 1) {
@@ -64,9 +63,6 @@ int readkeystruct(double** points, short point_len, point** pointbuf) {
     *(*points + i) = (*pointbuf)->data;
     i++;
   }
-  //for (int k = 0; k < i; ++k) {
-  //  printf("s=%lf\n", *(points + k));
-  //}
 
   printf("%s %lf %lf\n", key, avg(*points, i), median(*points, i));
   free(key);
@@ -74,16 +70,21 @@ int readkeystruct(double** points, short point_len, point** pointbuf) {
 }
 
 int main() {
-  double* points = malloc(sizeof(double) * 1);
+  double* points = malloc(sizeof(double) * MALLOC_SEG);
   short len = 1;
+
   point* pointbuf;
   pointbuf = malloc(sizeof(point));
   pointbuf->key = malloc(sizeof(char) * 1);
   memset(pointbuf->key, 0, 1);
+
   while (readkeystruct(&points, len, &pointbuf) != 1) {
     (void)0;
   }
+
   free(pointbuf->key);
   free(pointbuf);
   free(points);
+
+  return 0;
 }
