@@ -69,13 +69,13 @@ int readkeystruct(double** points, short point_len, point** pointbuf) {
   return exitcode;
 }
 
-int main() {
+int main(int argc, char **argv) {
   double* points = malloc(sizeof(double) * MALLOC_SEG);
   short len = 1;
 
   point* pointbuf;
   pointbuf = malloc(sizeof(point));
-  pointbuf->key = malloc(sizeof(char) * 1);
+  pointbuf->key = malloc(sizeof(char) * MALLOC_SEG);
   memset(pointbuf->key, 0, 1);
 
   while (readkeystruct(&points, len, &pointbuf) != 1) {
