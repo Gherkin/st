@@ -33,7 +33,7 @@ func median(input []float64) (result float64) {
 	return result
 }
 
-func handle(current_key []byte, numbers []byte, messages chan bool) {
+func handle(current_key []byte, numbers []byte) {
 	vs2 := bytes.Split(numbers, []byte("\n"))
     vals := make([]float64, 0, 100)
 	for _, v := range vs2 {
@@ -47,12 +47,9 @@ func handle(current_key []byte, numbers []byte, messages chan bool) {
 		}
 	}
     fmt.Printf("%s%f%f\n", string(current_key), mean(vals), median(vals))
-    messages <- true
 }
 
 func main() {
-    messages := make(chan bool)
-    num_keys := 0
 	r := bufio.NewReader(os.Stdin)
 	current_key := []byte(nil)
 	var numbers []byte
@@ -66,8 +63,7 @@ func main() {
 		}
 		if !bytes.Equal(key, current_key) {
 			if len(numbers) > 0 {
-				go handle(current_key, numbers, messages)
-                num_keys++
+				handle(current_key, numbers)
             }
 			current_key = make([]byte, len(key))
 			copy(current_key, key)
@@ -82,8 +78,5 @@ func main() {
 		}
 		numbers = append(numbers, val...)
 	}
-    for i := 0; i < num_keys; i++ {
-        <-messages
-    }
 }
 
