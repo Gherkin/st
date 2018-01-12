@@ -68,6 +68,23 @@ sys	0m0.156s
 ```
 
 ```
+$ cc -O3 reference_fread.c -o reference_fread && time ./reference_fread <data_sorted_cleaned
+37106238
+
+real	0m0.313s
+user	0m0.182s
+sys	0m0.129s
+```
+
+#### This reference is not counting any lines, just reading through the file
+
+```
+$ cc -O3 reference_fread_nocount.c -o reference_fread_nocount && time ./reference_fread_nocount <data_sorted_cleaned
+943414
+
+real	0m0.202s
+user	0m0.067s
+sys	0m0.134s
 ```
 
 ## Go
