@@ -1,0 +1,133 @@
+# st*
+
+Various implementations of github.com/gherkin/st.
+
+### Reference speeds
+
+These reference files are just counting lines in stdin to compare baseline filter speeds.
+
+```
+$ time wc -l data_sorted_cleaned
+ 37106238 data_sorted_cleaned
+
+real	0m0.689s
+user	0m0.558s
+sys	0m0.130s
+```
+
+```
+$ go build reference.go && time ./reference <data_sorted_cleaned
+37106238
+real	0m0.976s
+user	0m0.633s
+sys	0m0.343s
+```
+
+```
+$ time python2 reference.py <data_sorted_cleaned
+37106238
+
+real	0m5.153s
+user	0m5.003s
+sys	0m0.144s
+```
+
+```
+$ time python3 reference.py <data_sorted_cleaned
+37106238
+
+real	0m5.820s
+user	0m5.555s
+sys	0m0.261s
+```
+
+```
+$ cc -O3 reference_gets.c -o reference_gets && time ./reference_gets <data_sorted_cleaned
+37106238
+
+real	0m1.992s
+user	0m1.858s
+sys	0m0.131s
+```
+
+```
+$ cc -O3 reference_getc_unlocked.c -o reference_getc_unlocked && time ./reference_getc_unlocked <data_sorted_cleaned
+37106238
+
+real	0m2.089s
+user	0m1.962s
+sys	0m0.126s
+```
+
+```
+$ c++ -O3 reference_streams.cpp -o reference_streams && time ./reference_streams <data_sorted_cleaned
+37106238
+real	0m49.130s
+user	0m48.956s
+sys	0m0.156s
+```
+
+```
+```
+
+## Go
+
+One single threaded and one multi threaded implementation. (The multi threaded version and the single threaded version takes about the same time on my computer.)
+
+### st single threaded
+
+```
+$ go build stst.go && time ./stst <data_sorted_cleaned | wc -l
+  217912
+
+real	0m7.682s
+user	0m7.181s
+sys	0m1.242s
+```
+
+### st
+
+```
+$ go build st.go && time ./st <data_sorted_cleaned | wc -l
+  217912
+
+real	0m6.802s
+user	0m40.130s
+sys	0m2.828s
+```
+
+## c++
+
+One single threaded implementation. This implementation should be improved to use string_views into a fread-buffer instead of copying stuff around.
+
+```
+$ c++ -O3 st.cpp -o st++ && time ./st++ <data_sorted_cleaned | wc -l
+  217912
+
+real	0m4.876s
+user	0m4.723s
+sys	0m0.150s
+```
+
+## Python 3
+
+```
+$ time python3 st.py <data_sorted_cleaned | wc -l
+  217913
+
+real	1m45.349s
+user	1m44.500s
+sys	0m0.599s
+```
+
+## Python 2
+
+```
+$ time python st2.py <data_sorted_cleaned | wc -l
+  217913
+
+real	0m47.139s
+user	0m46.786s
+sys	0m0.282s
+```
+

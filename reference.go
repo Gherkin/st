@@ -12,7 +12,7 @@ func main() {
     r := bufio.NewReader(os.Stdin)
     n := 0
     for {
-        _, err := r.ReadSlice(' ')
+        _, err := r.ReadSlice('\n')
         if err != nil {
             if err == io.EOF {
                 break

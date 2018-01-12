@@ -8,7 +8,7 @@ int main() {
     string s;
     long int i = 0;
     while (getline(cin, s)) {
-        i += s.size();
+        ++i;
     }
     cout << i;
 }
