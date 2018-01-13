@@ -87,6 +87,27 @@ user	0m0.067s
 sys	0m0.134s
 ```
 
+## original st
+
+```
+$ cmake .
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /Users/folkol/code/st
+$ make clean
+$ make
+[ 33%] Building C object CMakeFiles/st.dir/main.c.o
+[ 66%] Building C object CMakeFiles/st.dir/maths.c.o
+[100%] Linking C executable st
+[100%] Built target st
+$ time ./st <data_sorted_cleaned | wc -l
+  217913
+
+real	0m12.931s
+user	0m12.770s
+sys	0m0.166s
+```
+
 ## Go
 
 One single threaded and one multi threaded implementation. (The multi threaded version and the single threaded version takes about the same time on my computer.)
