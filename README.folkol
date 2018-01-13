@@ -115,15 +115,28 @@ sys	0m2.828s
 
 ## c++
 
-One single threaded implementation. This implementation should be improved to use string_views into a fread-buffer instead of copying stuff around.
+A few implementations. One that copies items into a buffer, and another one that freads into a buffer and tries to parse the values from there.
+
+### st copy
+
+```
+$ c++ -O3 stcp.cpp -o stcp++ && time ./stcp++ <data_sorted_cleaned | wc -l
+  217912
+
+real	0m4.882s
+user	0m4.736s
+sys	0m0.152s
+```
+
+### st
 
 ```
 $ c++ -O3 st.cpp -o st++ && time ./st++ <data_sorted_cleaned | wc -l
   217912
 
-real	0m4.876s
-user	0m4.723s
-sys	0m0.150s
+real	0m2.751s
+user	0m2.617s
+sys	0m0.143s
 ```
 
 ## Python 3
