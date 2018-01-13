@@ -1,8 +1,8 @@
-import fileinput
+from sys import stdin
 from itertools import groupby
 from operator import itemgetter
 
-data = (line.split() for line in fileinput.input())
+data = (line.split() for line in stdin)
 for key, group in groupby(data, key=itemgetter(0)):
     values = list(float(value) for _, value in group)
     values.sort()

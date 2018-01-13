@@ -1,6 +1,6 @@
 # st*
 
-Various implementations of github.com/gherkin/st.
+Various implementations of `github.com/gherkin/st`.
 
 ### Reference speeds
 
@@ -115,7 +115,7 @@ sys	0m2.828s
 
 ## c++
 
-A few implementations. One that copies items into a buffer, and another one that freads into a buffer and tries to parse the values from there.
+Two implementations. One that copies lines, and another one that tries to parse values directly from the fread buffer.
 
 ### st copy
 
@@ -145,19 +145,19 @@ sys	0m0.143s
 $ time python3 st.py <data_sorted_cleaned | wc -l
   217913
 
-real	1m45.349s
-user	1m44.500s
-sys	0m0.599s
+real	1m27.493s
+user	1m26.882s
+sys	0m0.546s
 ```
 
 ## Python 2
 
 ```
-$ time python st2.py <data_sorted_cleaned | wc -l
+$ time python2 st2.py <data_sorted_cleaned | wc -l
   217913
 
-real	0m47.139s
-user	0m46.786s
-sys	0m0.282s
+real	0m34.211s
+user	0m33.987s
+sys	0m0.218s
 ```
 
