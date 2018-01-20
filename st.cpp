@@ -11,13 +11,10 @@
 const int BUF_SIZE = 4096;
 
 double median(std::vector<double> &v) {
-    // 2 x nth_element was a tiny bit faster for my data
-    // std::sort(v.begin(), v.end());
+    std::sort(v.begin(), v.end());
     size_t n = v.size() / 2;
-    nth_element(v.begin(), v.begin() + n, v.end());
     double median = v[n];
     if (v.size() % 2 == 0) {
-        nth_element(v.begin(), v.begin() + n - 1, v.end());
         median = (v[n - 1] + median) / 2.;
     }
 
@@ -68,7 +65,7 @@ int main() {
             s = strsep(&n, "\n");
             if (!n) {
                 double f = finish_line(buf, s);
-                if(buf[0] != '\0') {
+                if (buf[0] != '\0') {
                     numbers.push_back(f);
                 }
                 break;
