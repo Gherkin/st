@@ -33,7 +33,8 @@ double finish_line(FILE *f, char *buf, const char *s, long &count) {
     }
     --count;
     *tmp = '\0';
-    return atof(tmp);
+//    printf(" >> finish_line: ['%s']\n", tmp);
+    return atof(buf);
 }
 
 int main(int argc, char *argv[]) {
@@ -78,7 +79,7 @@ int main(int argc, char *argv[]) {
                 if (!numbers.empty()) {
 //                    printf("%s %ld %lf %lf\n", key, numbers.size(), mean(numbers), median(numbers));
                     printf("%s %lf %lf\n", key, mean(numbers), median(numbers));
-//                    for (auto&& n : numbers) {
+//                    for (auto &&n : numbers) {
 //                        printf(" %lf\n", n);
 //                    }
 //                    puts("");
@@ -90,16 +91,21 @@ int main(int argc, char *argv[]) {
             s = strsep(&n, "\n");
             if (!n) {
                 double f = finish_line(file, buf, s, count);
-                numbers.push_back(f);
+                if(buf[0] != '\0') {
+//                    printf(" - %lf\n", f);
+                    numbers.push_back(f);
+                }
                 break;
             }
-            numbers.push_back(atof(s));
+            double f = atof(s);
+//            printf(" -- %lf\n", f);
+            numbers.push_back(f);
         }
     }
     if (!numbers.empty()) {
 //        printf("%s %ld %lf %lf\n", key, numbers.size(), mean(numbers), median(numbers));
         printf("%s %lf %lf\n", key, mean(numbers), median(numbers));
-//        for (auto&& n : numbers) {
+//        for (auto &&n : numbers) {
 //            printf("%lf\n", n);
 //        }
 //        puts("");
