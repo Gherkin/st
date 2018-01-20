@@ -24,12 +24,14 @@ double mean(std::vector<double> &v) {
     return std::accumulate(v.begin(), v.end(), .0) / v.size();
 }
 
-double finish_line(FILE *f, char *buf, const char *s) {
+double finish_line(FILE *f, char *buf, const char *s, long &count) {
     strcpy(buf, s);
     char c, *tmp = buf + strlen(s);
     while (c = getc_unlocked(f), c != EOF && c != '\n') {
+        ++count;
         *tmp++ = c;
     }
+    ++count;
     *tmp = '\0';
     return atof(tmp);
 }
@@ -37,9 +39,6 @@ double finish_line(FILE *f, char *buf, const char *s) {
 int main(int argc, char *argv[]) {
     if (argc != 4) {
         puts("usage: ./stsplit filename offset bytecount");
-        for (int i = 0; i < argc; i++) {
-            printf(" >> [%d]: %s\n", i, argv[i]);
-        }
         exit(1);
     }
 
@@ -48,13 +47,16 @@ int main(int argc, char *argv[]) {
     long count = atol(argv[3]);
 
     FILE *file = fopen(argv[1], "r");
+    fseek(file, offset, SEEK_SET);
     char buf[BUF_SIZE], key[BUF_SIZE];
     long nread, prefix = 0;
 
+//    fprintf(stderr, " >> %ld\n", ftell(file));
     strcpy(key, "");
     std::vector<double> numbers;
     while (nread = fread(buf + prefix, 1, std::min((long)(sizeof buf - prefix - 1), count), file), nread) {
         count -= nread;
+//        fprintf(stderr, " >>> %ld %ld %ld\n", nread, count, ftell(file));
         buf[nread + prefix] = '\0';
         prefix = 0;
         char *n = buf;
@@ -64,6 +66,7 @@ int main(int argc, char *argv[]) {
                 // End of buffer while reading key, put the few chars back and start over...
                 strcpy(buf, s);
                 prefix = strlen(s);
+                count += prefix;
                 break;
             }
 
@@ -77,7 +80,7 @@ int main(int argc, char *argv[]) {
 
             s = strsep(&n, "\n");
             if (!n) {
-                double f = finish_line(file, buf, s);
+                double f = finish_line(file, buf, s, count);
                 numbers.push_back(f);
                 break;
             }
@@ -87,4 +90,5 @@ int main(int argc, char *argv[]) {
     if (!numbers.empty()) {
         printf("%s %lf %lf\n", key, mean(numbers), median(numbers));
     }
+//    fprintf(stderr, " >> %ld\n", ftell(file));
 }

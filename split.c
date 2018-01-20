@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
             char *newkey = strsep(&line2, " ");
             if (strcmp(key, newkey)) {
                 printf("%s %ld %ld\n", filename, prev, cur - prev);
-                prev = cur + 1;
+                prev = cur;
                 break;
             }
         }
