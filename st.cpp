@@ -35,7 +35,7 @@ double finish_line(char *buf, const char *s) {
         *tmp++ = c;
     }
     *tmp = '\0';
-    return atof(tmp);
+    return atof(buf);
 }
 
 int main() {
@@ -59,12 +59,12 @@ int main() {
 
             if (strcmp(key, s)) {
                 if (!numbers.empty()) {
-                    printf("%s %ld %lf %lf\n", key, numbers.size(), mean(numbers), median(numbers));
-//                    printf("%s %lf %lf\n", key, mean(numbers), median(numbers));
-                    for (auto&& n : numbers) {
-                        printf(" %lf\n", n);
-                    }
-                    puts("");
+//                    printf("%s %ld %lf %lf\n", key, numbers.size(), mean(numbers), median(numbers));
+                    printf("%s %lf %lf\n", key, mean(numbers), median(numbers));
+//                    for (auto&& n : numbers) {
+//                        printf(" %lf\n", n);
+//                    }
+//                    puts("");
                 }
                 numbers.clear();
                 strcpy(key, s);
@@ -73,18 +73,20 @@ int main() {
             s = strsep(&n, "\n");
             if (!n) {
                 double f = finish_line(buf, s);
-                numbers.push_back(f);
+                if(buf[0] != '\0') {
+                    numbers.push_back(f);
+                }
                 break;
             }
             numbers.push_back(atof(s));
         }
     }
     if (!numbers.empty()) {
-        printf("%s %ld %lf %lf\n", key, numbers.size(), mean(numbers), median(numbers));
-//        printf("%s %lf %lf\n", key, mean(numbers), median(numbers));
-        for (auto&& n : numbers) {
-            printf(" %lf\n", n);
-        }
-        puts("");
+//        printf("%s %ld %lf %lf\n", key, numbers.size(), mean(numbers), median(numbers));
+        printf("%s %lf %lf\n", key, mean(numbers), median(numbers));
+//        for (auto&& n : numbers) {
+//            printf(" %lf\n", n);
+//        }
+//        puts("");
     }
 }
