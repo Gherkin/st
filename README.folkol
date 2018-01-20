@@ -136,7 +136,7 @@ sys	0m2.828s
 
 ## c++
 
-Two implementations. One that copies lines, and another one that tries to parse values directly from the fread buffer.
+Three single threaded implementations. One that copies lines, and another one that tries to parse values directly from the fread buffer. One multithreaded implementation that relies on an external `split` program that searches for key boundary.
 
 ### st copy
 
@@ -158,6 +158,17 @@ $ c++ -O3 st.cpp -o st++ && time ./st++ <data_sorted_cleaned | wc -l
 real	0m2.751s
 user	0m2.617s
 sys	0m0.143s
+```
+
+### stsplit
+
+```
+$ cc -O3 split.c -o split \
+	&& c++ -std=c++11 -O3 stsplit.cpp -o stsplit \
+	&& ./split data_sorted_cleaned 4 \
+		| time parallel -k --colsep ' ' ./stsplit | wc -l
+        0.91 real         2.80 user         0.24 sys
+  217913
 ```
 
 ## Python 3

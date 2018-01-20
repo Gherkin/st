@@ -76,7 +76,12 @@ int main(int argc, char *argv[]) {
 
             if (strcmp(key, s)) {
                 if (!numbers.empty()) {
+//                    printf("%s %ld %lf %lf\n", key, numbers.size(), mean(numbers), median(numbers));
                     printf("%s %lf %lf\n", key, mean(numbers), median(numbers));
+//                    for (auto&& n : numbers) {
+//                        printf(" %lf\n", n);
+//                    }
+//                    puts("");
                 }
                 numbers.clear();
                 strcpy(key, s);
@@ -92,7 +97,12 @@ int main(int argc, char *argv[]) {
         }
     }
     if (!numbers.empty()) {
+//        printf("%s %ld %lf %lf\n", key, numbers.size(), mean(numbers), median(numbers));
         printf("%s %lf %lf\n", key, mean(numbers), median(numbers));
+//        for (auto&& n : numbers) {
+//            printf("%lf\n", n);
+//        }
+//        puts("");
     }
 //    fprintf(stderr, " >> %ld\n", ftell(file));
 }

@@ -4,11 +4,15 @@
 #include <algorithm>
 #include <string.h>
 
+/**
+ * N.b. This is a naive program without bounds checking or similar.
+ */
+
 const int BUF_SIZE = 4096;
 
 double median(std::vector<double> &v) {
     // 2 x nth_element was a tiny bit faster for my data
-    // std::sort(v.begin(), v.end());  
+//     std::sort(v.begin(), v.end());
     size_t n = v.size() / 2;
     nth_element(v.begin(), v.begin() + n, v.end());
     double median = v[n];
@@ -55,7 +59,12 @@ int main() {
 
             if (strcmp(key, s)) {
                 if (!numbers.empty()) {
-                    printf("%s %lf %lf\n", key, mean(numbers), median(numbers));
+                    printf("%s %ld %lf %lf\n", key, numbers.size(), mean(numbers), median(numbers));
+//                    printf("%s %lf %lf\n", key, mean(numbers), median(numbers));
+                    for (auto&& n : numbers) {
+                        printf(" %lf\n", n);
+                    }
+                    puts("");
                 }
                 numbers.clear();
                 strcpy(key, s);
@@ -71,6 +80,11 @@ int main() {
         }
     }
     if (!numbers.empty()) {
-        printf("%s %lf %lf\n", key, mean(numbers), median(numbers));
+        printf("%s %ld %lf %lf\n", key, numbers.size(), mean(numbers), median(numbers));
+//        printf("%s %lf %lf\n", key, mean(numbers), median(numbers));
+        for (auto&& n : numbers) {
+            printf(" %lf\n", n);
+        }
+        puts("");
     }
 }
