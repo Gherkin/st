@@ -28,10 +28,10 @@ double finish_line(FILE *f, char *buf, const char *s, long &count) {
     strcpy(buf, s);
     char c, *tmp = buf + strlen(s);
     while (c = getc_unlocked(f), c != EOF && c != '\n') {
-        ++count;
+        --count;
         *tmp++ = c;
     }
-    ++count;
+    --count;
     *tmp = '\0';
     return atof(tmp);
 }
@@ -54,7 +54,12 @@ int main(int argc, char *argv[]) {
 //    fprintf(stderr, " >> %ld\n", ftell(file));
     strcpy(key, "");
     std::vector<double> numbers;
-    while (nread = fread(buf + prefix, 1, std::min((long)(sizeof buf - prefix - 1), count), file), nread) {
+    while (true) {
+        long spare_buf = sizeof buf - prefix - 1;
+        nread = fread(buf + prefix, 1, std::min(spare_buf, count), file);
+        if (nread == 0) {
+            break;
+        }
         count -= nread;
 //        fprintf(stderr, " >>> %ld %ld %ld\n", nread, count, ftell(file));
         buf[nread + prefix] = '\0';
@@ -66,7 +71,6 @@ int main(int argc, char *argv[]) {
                 // End of buffer while reading key, put the few chars back and start over...
                 strcpy(buf, s);
                 prefix = strlen(s);
-                count += prefix;
                 break;
             }
 
